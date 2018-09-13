@@ -1,0 +1,4 @@
+---
+- name: Import key into APT
+  apt_key:
+    file: "{{ tmp.path }}"

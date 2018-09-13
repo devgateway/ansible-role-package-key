@@ -1,0 +1,28 @@
+---
+- name: Create a temporary file
+  tempfile:
+    state: file
+    suffix: .asc
+  changed_when: false
+  check_mode: false
+  register: tmp
+
+- name: Copy key contents
+  copy:
+    content: "{{ key | mandatory }}"
+    dest: "{{ tmp.path }}"
+  check_mode: false
+  changed_when: false
+
+- include_tasks: apt.yml
+  when: ansible_pkg_mgr == 'apt'
+
+- include_tasks: rpm.yml
+  when: ansible_pkg_mgr != 'apt'
+
+- name: Delete temporary file
+  file:
+    path: "{{ tmp.path }}"
+    state: absent
+  check_mode: false
+  changed_when: false

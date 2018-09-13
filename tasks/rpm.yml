@@ -1,0 +1,4 @@
+---
+- name: Import key into RPM
+  rpm_key:
+    key: "{{ tmp.path }}"
